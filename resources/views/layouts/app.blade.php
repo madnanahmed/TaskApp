@@ -14,7 +14,6 @@
 </nav>
 <h1>@yield('title')</h1>
 <div>
-
     <div x-data="{ flash:true}">
         @if(session()->has('success'))
         <div x-show="flash" class="relative mb-10 rounded border border-green-400 bg-green-100 px-4 py-3 text-lg text-green-700"

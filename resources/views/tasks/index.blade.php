@@ -5,8 +5,6 @@
 @endsection
 
 @section('content')
-    
-
 <div class=" justify-center items-center p-8 bg-gradient-to-br from-blue-100 to-indigo-200">
     <div class=" flex justify-center mb-6">
         <a href="{{ route('tasks.create') }}" class="mb-4 inline-block bg-indigo-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-indigo-700 transition">
@@ -39,9 +37,7 @@
                                 <span class="text-sm text-green-600 font-semibold bg-green-100 px-2 py-1 rounded-full">Completed</span>
                             @else
                                 <span class="text-sm text-yellow-600 font-semibold bg-yellow-100 px-2 py-1 rounded-full">Pending</span>
-                            @endif                        
-                            
-                            
+                            @endif
                             <a href="{{ route('tasks.edit', $task->id) }}" class="ml-2 text-indigo-500 hover:text-indigo-700 underline text-sm transition"
                                     title="Edit">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
