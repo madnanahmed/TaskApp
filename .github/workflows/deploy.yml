@@ -1,32 +1,17 @@
-name: Deploy to cPanel Server
+- name: Setup SSH
+  run: |
+    mkdir -p ~/.ssh
+    echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+    chmod 600 ~/.ssh/id_ed25519
+    ssh-keyscan -H -p 22 ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-
-      - name: Deploy
-        run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            cd ${{ secrets.APP_PATH }}
-            git pull origin main
-            composer install --no-dev --optimize-autoloader || true
-            php artisan migrate --force || true
-            php artisan config:clear || true
-            php artisan cache:clear || true
-          EOF
+- name: Deploy
+  run: |
+    ssh -i ~/.ssh/id_ed25519 -p 22 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+      cd ${{ secrets.APP_PATH }}
+      git pull origin main
+      composer install --no-dev --optimize-autoloader || true
+      php artisan migrate --force || true
+      php artisan config:clear || true
+      php artisan cache:clear || true
+    EOF
